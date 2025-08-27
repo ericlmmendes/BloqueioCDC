@@ -1,51 +1,175 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Bloqueio CDC - Pesquisa</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        header {
+            background-color: #004aad;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 60px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+        }
+        .form-container h2 {
+            margin: 0 0 20px;
+            font-size: 1.8rem;
+            color: #004aad;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #004aad;
+            outline: none;
+        }
+        button[type="submit"] {
+            background-color: #004aad;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #003087;
+        }
+        .alert {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .badge {
+            background-color: white;
+            border: 2px solid #004aad;
+            border-radius: 12px;
+            width: 280px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+        .badge:hover {
+            transform: translateY(-5px);
+        }
+        .badge img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid #004aad;
+        }
+        .badge p {
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+        .badge p strong {
+            color: #004aad;
+        }
+        .logoff-button {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex
+;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: background-color 0.3s;
+        }
+        .logoff-button:hover {
+            background-color: #5a6268;
+        }
+        .logoff-button svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #004aad;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <button id="logoffButton" class="logoff-button" title="Logoff">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2v5h4v-5h2c0-2.21-1.79-4-4-4zm0 7h-2v-3h2v3z"/>
+        </svg>
+    </button>
     <header>
         <h1>Sistema de Bloqueio CDC</h1>
     </header>
@@ -60,26 +184,107 @@
                 </div>
                 <button type="submit">Pesquisar</button>
             </form>
-            <div id="result" style="display: none;">
-                <p><strong>Nome:</strong> <span id="resultNome"></span></p>
-                <p><strong>CPF:</strong> <span id="resultCpf"></span></p>
-                <p><strong>Agência:</strong> <span id="resultAgencia"></span></p>
-                <p><strong>Motivo do Bloqueio:</strong> <span id="resultMotivo"></span></p>
-                <button id="deleteButton" style="display: none; background-color: #c62828;">Excluir</button>
-            </div>
+            <div id="result" class="badge-container"></div>
         </div>
     </main>
     <footer>
         <p>© 2025 Sistema de Bloqueio CDC - ERICLM.EVO. Todos os direitos reservados.</p>
     </footer>
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
     <script type="module">
-        import { database, ref, onValue, remove } from './Info.js';
+        import { database, ref, onValue } from './Info.js';
 
         const pesquisaForm = document.getElementById('pesquisaForm');
         const alert = document.getElementById('alert');
         const result = document.getElementById('result');
-        const deleteButton = document.getElementById('deleteButton');
-        let currentColaboradorId = null;
+        const logoffButton = document.getElementById('logoffButton');
+
+        function displayAllColaboradores(data) {
+            result.innerHTML = '';
+            if (data) {
+                Object.entries(data).forEach(([id, colaborador]) => {
+                    const badge = document.createElement('div');
+                    badge.className = 'badge';
+                    badge.innerHTML = `
+                        <img src="https://via.placeholder.com/100" alt="Foto do Colaborador">
+                        <p><strong>Nome:</strong> ${colaborador.nome}</p>
+                        <p><strong>CPF:</strong> ${colaborador.cpf}</p>
+                        <p><strong>Agência:</strong> ${colaborador.agencia}</p>
+                        <p><strong>Motivo do Bloqueio:</strong> ${colaborador.motivo}</p>
+                    `;
+                    result.appendChild(badge);
+                });
+                result.style.display = 'flex';
+            } else {
+                showAlert('error', 'Nenhum colaborador encontrado.');
+                result.style.display = 'none';
+            }
+        }
+
+        function filterColaboradores(cpf, data) {
+            result.innerHTML = '';
+            let found = false;
+            if (data) {
+                Object.entries(data).forEach(([id, colaborador]) => {
+                    if (colaborador.cpf === cpf) {
+                        found = true;
+                        const badge = document.createElement('div');
+                        badge.className = 'badge';
+                        badge.innerHTML = `
+                            <img src="https://via.placeholder.com/100" alt="Foto do Colaborador">
+                            <p><strong>Nome:</strong> ${colaborador.nome}</p>
+                            <p><strong>CPF:</strong> ${colaborador.cpf}</p>
+                            <p><strong>Agência:</strong> ${colaborador.agencia}</p>
+                            <p><strong>Motivo do Bloqueio:</strong> ${colaborador.motivo}</p>
+                        `;
+                        result.appendChild(badge);
+                    }
+                });
+                result.style.display = 'flex';
+            }
+            if (!found) {
+                showAlert('error', 'Colaborador não encontrado.');
+                result.style.display = 'none';
+            }
+        }
+
+        // Load all colaboradores on page load
+        const colaboradoresRef = ref(database, 'colaboradores');
+        onValue(colaboradoresRef, (snapshot) => {
+            const data = snapshot.val();
+            displayAllColaboradores(data);
+        });
 
         pesquisaForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -90,48 +295,15 @@
                 return;
             }
 
-            const colaboradoresRef = ref(database, 'colaboradores');
             onValue(colaboradoresRef, (snapshot) => {
                 const data = snapshot.val();
-                let found = false;
-
-                if (data) {
-                    Object.entries(data).forEach(([id, colaborador]) => {
-                        if (colaborador.cpf === cpf) {
-                            found = true;
-                            currentColaboradorId = id;
-                            document.getElementById('resultNome').textContent = colaborador.nome;
-                            document.getElementById('resultCpf').textContent = colaborador.cpf;
-                            document.getElementById('resultAgencia').textContent = colaborador.agencia;
-                            document.getElementById('resultMotivo').textContent = colaborador.motivo;
-                            result.style.display = 'block';
-                            deleteButton.style.display = sessionStorage.getItem('userRole') === 'admin' ? 'block' : 'none';
-                        }
-                    });
-                }
-
-                if (!found) {
-                    showAlert('error', 'Colaborador não encontrado.');
-                    result.style.display = 'none';
-                }
+                filterColaboradores(cpf, data);
             });
         });
 
-        deleteButton.addEventListener('click', async () => {
-            if (sessionStorage.getItem('userRole') !== 'admin') {
-                showAlert('error', 'Acesso não autorizado.');
-                return;
-            }
-
-            try {
-                const colaboradorRef = ref(database, `colaboradores/${currentColaboradorId}`);
-                await remove(colaboradorRef);
-                showAlert('success', 'Colaborador excluído com sucesso!');
-                result.style.display = 'none';
-                pesquisaForm.reset();
-            } catch (error) {
-                showAlert('error', 'Erro ao excluir colaborador: ' + error.message);
-            }
+        logoffButton.addEventListener('click', () => {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
         });
 
         function showAlert(type, message) {
