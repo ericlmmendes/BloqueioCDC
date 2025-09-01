@@ -17,11 +17,13 @@ header {
 }
 
 main {
-    flex: 1;
+    flex: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    flex-wrap: nowrap;
+    flex-direction: column;
 }
 
 .form-container {
