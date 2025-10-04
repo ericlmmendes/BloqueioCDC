@@ -4,158 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Bloqueio CDC - Pesquisa</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="./img/logo1.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js"></script>
     <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --background: #f9fafb;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background);
             margin: 0;
             padding: 0;
-            position: relative;
-            color: #333;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
+
         header {
-            background: linear-gradient(90deg, #004aad, #0066cc);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             text-align: center;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem 1rem;
+            box-shadow: var(--shadow-lg);
         }
+
         header h1 {
             margin: 0;
-            font-size: 2.2rem;
-            font-weight: 600;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
+
         main {
-            margin: 40px 20px;
-            padding: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
+
         .logo {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 2rem;
         }
+
         .logo img {
-            max-width: 200px;
+            max-width: 180px;
             height: auto;
+            filter: drop-shadow(var(--shadow-sm));
         }
+
         h2 {
-            margin: 0 0 25px;
-            font-size: 1.9rem;
-            color: #004aad;
+            margin: 0 0 2rem;
+            font-size: 2rem;
+            color: var(--primary-color);
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: -0.025em;
         }
+
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
         form {
-            max-width: 500px;
-            margin: 0 auto 25px;
+            max-width: 480px;
+            flex: 1;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
         }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
+
         label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: #333;
-            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.95rem;
         }
+
         input[type="text"], select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            box-sizing: border-box;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+            transition: all 0.2s ease-in-out;
+            background: var(--surface);
         }
+
         input[type="text"]:focus, select:focus {
-            border-color: #004aad;
-            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
             outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
         }
+
         button[type="submit"] {
-            background-color: #004aad;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 12px 30px;
+            padding: 0.875rem 2rem;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             font-size: 1rem;
             font-weight: 500;
             display: block;
             margin: 0 auto;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
         }
+
         button[type="submit"]:hover {
-            background-color: #003087;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
         }
+
         .alert {
-            max-width: 500px;
-            margin: 0 auto 20px;
-            padding: 12px;
-            border-radius: 8px;
+            max-width: 480px;
+            margin: 0 auto 1.5rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
             font-size: 0.9rem;
             text-align: center;
+            font-weight: 500;
+            display: none;
         }
+
         .alert.success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
         }
+
         .alert.error {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
         }
+
         .results {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
-            overflow-x: auto;
-            padding-bottom: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
+
         .badge-wrapper {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease-in-out;
             display: flex;
             align-items: center;
-            gap: 12px;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            flex: 0 0 auto;
-            min-width: 280px;
-        }
-        .badge-wrapper:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-        .badge-photo {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #004aad;
+            gap: 1rem;
             cursor: pointer;
         }
+
+        .badge-wrapper:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .badge-photo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            flex-shrink: 0;
+        }
+
         .badge {
+            flex: 1;
             text-align: left;
-            width: 180px;
         }
+
         .badge p {
-            margin: 5px 0;
-            font-size: 0.85rem;
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
             line-height: 1.4;
+            color: var(--text-secondary);
         }
+
         .badge p strong {
-            color: #004aad;
+            color: var(--text-primary);
             font-weight: 600;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -163,119 +230,205 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(4px);
         }
+
         .modal-content {
             position: relative;
-            max-width: 500px;
-            max-height: 80vh;
+            max-width: 90vw;
+            max-height: 90vh;
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
         }
+
         .modal-content img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            border: 2px solid #004aad;
+            display: block;
         }
+
         .modal-close {
             position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 40px;
-            height: 40px;
-            background-color: #1c4eda;
+            top: 1rem;
+            right: 1rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--text-secondary);
             border: none;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s, transform 0.2s;
+            color: white;
+            transition: all 0.2s ease-in-out;
+            z-index: 1;
         }
+
         .modal-close:hover {
-            background-color: #b02a37;
-            transform: scale(1.1);
+            background: #ef4444;
+            transform: scale(1.05);
         }
+
         .modal-close svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
+            width: 1.25rem;
+            height: 1.25rem;
         }
+
+        .logoff-button, .report-button {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: all 0.2s ease-in-out;
+            color: white;
+        }
+
         .logoff-button {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background-color: #6c757d;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            transition: background-color 0.3s, transform 0.2s;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--text-secondary);
         }
+
         .logoff-button:hover {
-            background-color: #5a6268;
+            background: #6b7280;
             transform: scale(1.05);
         }
-        .logoff-button svg {
-            width: 28px;
-            height: 28px;
-            fill: white;
-        }
+
         .report-button {
-            position: fixed;
-            bottom: 150px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background-color: #004aad;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            transition: background-color 0.3s, transform 0.2s;
+            bottom: 6rem;
+            right: 1.5rem;
+            background: var(--primary-color);
         }
+
         .report-button:hover {
-            background-color: #003087;
+            background: var(--primary-dark);
             transform: scale(1.05);
         }
-        .report-button svg {
-            width: 28px;
-            height: 28px;
-            fill: white;
+
+        .logoff-button svg, .report-button svg {
+            width: 1.5rem;
+            height: 1.5rem;
         }
+
+        #reportModal .modal-content {
+            padding: 2rem;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        #reportModal .logo {
+            justify-content: center;
+            margin: 0 0 1rem;
+        }
+
+        #reportModal .logo img {
+            max-width: 120px;
+        }
+
+        #reportModal h3 {
+            margin: 0 0 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table th, .stats-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-table th {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stats-table td {
+            color: var(--text-primary);
+        }
+
         footer {
             text-align: center;
             padding: 1rem;
-            background: linear-gradient(90deg, #004aad, #0066cc);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            position: fixed;
-            bottom: 0;
             width: 100%;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
+            font-weight: 400;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            form {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .results {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .badge-wrapper {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .logoff-button, .report-button {
+                width: 3rem;
+                height: 3rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .report-button {
+                bottom: 5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <button id="reportButton" class="report-button" title="Gerar Relatório PDF">
-        <svg viewBox="0 0 24 24" fill="white">
+    <button id="reportButton" class="report-button" title="Gerar Relatório PDF" aria-label="Gerar Relatório PDF">
+        <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1 .89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>
         </svg>
     </button>
-    <button id="logoffButton" class="logoff-button" title="Logoff">
-        <svg viewBox="0 0 24 24">
+    <button id="logoffButton" class="logoff-button" title="Logoff" aria-label="Logoff">
+        <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2v5h4v-5h2c0-2.21-1.79-4-4-4zm0 7h-2v-3h2v3z"/>
         </svg>
     </button>
@@ -286,41 +439,62 @@
         <div class="logo">
             <img src="./img/logo2.png" alt="Logo Sistema CDC">
         </div>
-        <h2>Pesquisa por CPF</h2>
-        <div id="alert" class="alert"></div>
-        <form id="pesquisaForm">
-            <div class="form-group">
-                <label for="cpf">CPF</label>
-                <input type="text" id="cpf" name="cpf" placeholder="Digite o CPF ou CPFs separados por vírgula" required>
-            </div>
-            <button type="submit">Pesquisar</button>
-        </form>
-        <div id="results" class="results"></div>
+        <h2>Pesquisa por CPF e Estatísticas</h2>
+        <div id="alert" class="alert" role="alert"></div>
+        <div class="form-container">
+            <form id="pesquisaForm" aria-labelledby="pesquisa-label">
+                <div class="form-group">
+                    <label id="pesquisa-label" for="cpf">CPF</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="Digite o CPF ou CPFs separados por vírgula" required aria-required="true">
+                </div>
+                <button type="submit">Pesquisar</button>
+            </form>
+            <form id="statsForm" aria-labelledby="stats-label">
+                <div class="form-group">
+                    <label id="stats-label">Estatísticas de Colaboradores Bloqueados por Agência</label>
+                    <table class="stats-table" id="statsTable">
+                        <thead>
+                            <tr>
+                                <th>Agência</th>
+                                <th>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statsBody">
+                            <!-- Dados preenchidos via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div id="results" class="results" role="region" aria-live="polite"></div>
     </main>
-    <div id="photoModal" class="modal">
+    <div id="photoModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="photo-modal-title">
         <div class="modal-content">
-            <button class="modal-close" title="Fechar">
-                <svg viewBox="0 0 24 24">
+            <button class="modal-close" title="Fechar" aria-label="Fechar modal">
+                <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                 </svg>
             </button>
-            <img id="expandedPhoto" src="" alt="Foto Ampliada">
+            <img id="expandedPhoto" src="" alt="Foto Ampliada do Colaborador">
         </div>
     </div>
-    <div id="reportModal" class="modal">
-        <div class="modal-content" style="background: white; padding: 20px; border-radius: 10px; max-width: 400px; text-align: center;">
-            <button class="modal-close" title="Fechar">
-                <svg viewBox="0 0 24 24">
+    <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
+        <div class="modal-content">
+            <button class="modal-close" title="Fechar" aria-label="Fechar modal">
+                <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                 </svg>
             </button>
-            <img src="./img/logo2.png" alt="Logo Sistema CDC" style="max-width: 150px; height: auto; margin-bottom: 15px;">
-            <h3>Gerar Relatório PDF</h3>
+            <div class="logo">
+                <img src="./img/logo2.png" alt="Logo Sistema CDC">
+            </div>
+            <h3 id="report-modal-title">Gerar Relatório PDF</h3>
             <form id="reportForm">
                 <div class="form-group">
                     <label for="agencia">Agência</label>
-                    <select id="agencia" name="agencia" required>
+                    <select id="agencia" name="agencia" required aria-required="true">
                         <option value="" disabled selected>Selecione uma agência</option>
+                        <option value="all">Todas as Agências</option>
                         <option value="Enfok">Enfok</option>
                         <option value="D0">D0</option>
                         <option value="Polly">Polly</option>
@@ -332,7 +506,8 @@
         </div>
     </div>
     <footer>
-        <p>© 2025 Sistema de Bloqueio CDC - ERICLM.EVO. Todos os direitos reservados.</p>
+        <p>© 2025 Sistema de Bloqueio CDC. Todos os direitos reservados.</p>
+        <p>Desenvolvido por <a href="mailto:ericlm.evo@gmail.com">ERICLM.EVO</a></p>
     </footer>
     <script type="text/javascript">
         var gk_isXlsx = false;
@@ -370,6 +545,7 @@
         import { database, ref, onValue } from './Info.js';
 
         const pesquisaForm = document.getElementById('pesquisaForm');
+        const statsBody = document.getElementById('statsBody');
         const alert = document.getElementById('alert');
         const results = document.getElementById('results');
         const logoffButton = document.getElementById('logoffButton');
@@ -387,24 +563,20 @@
                 Object.entries(data).forEach(([id, colaborador]) => {
                     const badgeWrapper = document.createElement('div');
                     badgeWrapper.className = 'badge-wrapper';
+                    badgeWrapper.setAttribute('role', 'article');
                     badgeWrapper.innerHTML = `
-                        <img src="${colaborador.foto || 'https://via.placeholder.com/100'}" alt="Foto do Colaborador" class="badge-photo" data-photo-url="${colaborador.foto || 'https://via.placeholder.com/100'}">
+                        <img src="${colaborador.foto || 'https://via.placeholder.com/100?text=Sem+Foto'}" alt="Foto do Colaborador ${colaborador.nome || 'Desconhecido'}" class="badge-photo" data-photo-url="${colaborador.foto || 'https://via.placeholder.com/100?text=Sem+Foto'}">
                         <div class="badge">
-                            <p><strong>Nome:</strong> ${colaborador.nome}</p>
-                            <p><strong>CPF:</strong> ${colaborador.cpf}</p>
-                            <p><strong>Agência:</strong> ${colaborador.agencia}</p>
-                            <p><strong>Motivo do Bloqueio:</strong> ${colaborador.motivo}</p>
+                            <p><strong>Nome:</strong> ${colaborador.nome || 'Não informado'}</p>
+                            <p><strong>CPF:</strong> ${colaborador.cpf || 'Não informado'}</p>
+                            <p><strong>Agência:</strong> ${colaborador.agencia || 'Não informado'}</p>
+                            <p><strong>Motivo do Bloqueio:</strong> ${colaborador.motivo || 'Não informado'}</p>
                         </div>
                     `;
                     results.appendChild(badgeWrapper);
                 });
-                results.style.display = 'flex';
-                document.querySelectorAll('.badge-photo').forEach(photo => {
-                    photo.addEventListener('click', () => {
-                        expandedPhoto.src = photo.getAttribute('data-photo-url');
-                        photoModal.style.display = 'flex';
-                    });
-                });
+                results.style.display = 'grid';
+                attachPhotoListeners();
             } else {
                 showAlert('error', 'Nenhum colaborador encontrado.');
                 results.style.display = 'none';
@@ -420,25 +592,21 @@
                         found++;
                         const badgeWrapper = document.createElement('div');
                         badgeWrapper.className = 'badge-wrapper';
+                        badgeWrapper.setAttribute('role', 'article');
                         badgeWrapper.innerHTML = `
-                            <img src="${colaborador.foto || 'https://via.placeholder.com/100'}" alt="Foto do Colaborador" class="badge-photo" data-photo-url="${colaborador.foto || 'https://via.placeholder.com/100'}">
+                            <img src="${colaborador.foto || 'https://via.placeholder.com/100?text=Sem+Foto'}" alt="Foto do Colaborador ${colaborador.nome || 'Desconhecido'}" class="badge-photo" data-photo-url="${colaborador.foto || 'https://via.placeholder.com/100?text=Sem+Foto'}">
                             <div class="badge">
-                                <p><strong>Nome:</strong> ${colaborador.nome}</p>
-                                <p><strong>CPF:</strong> ${colaborador.cpf}</p>
-                                <p><strong>Agência:</strong> ${colaborador.agencia}</p>
-                                <p><strong>Motivo do Bloqueio:</strong> ${colaborador.motivo}</p>
+                                <p><strong>Nome:</strong> ${colaborador.nome || 'Não informado'}</p>
+                                <p><strong>CPF:</strong> ${colaborador.cpf || 'Não informado'}</p>
+                                <p><strong>Agência:</strong> ${colaborador.agencia || 'Não informado'}</p>
+                                <p><strong>Motivo do Bloqueio:</strong> ${colaborador.motivo || 'Não informado'}</p>
                             </div>
                         `;
                         results.appendChild(badgeWrapper);
                     }
                 });
-                results.style.display = 'flex';
-                document.querySelectorAll('.badge-photo').forEach(photo => {
-                    photo.addEventListener('click', () => {
-                        expandedPhoto.src = photo.getAttribute('data-photo-url');
-                        photoModal.style.display = 'flex';
-                    });
-                });
+                results.style.display = 'grid';
+                attachPhotoListeners();
             }
             if (found === 0) {
                 showAlert('error', 'Nenhum colaborador encontrado.');
@@ -446,7 +614,54 @@
             }
         }
 
-        function generatePDF(agencia, data) {
+        function updateStatsTable(data) {
+            const stats = {
+                'Enfok': 0,
+                'D0': 0,
+                'Polly': 0,
+                'Blitz': 0,
+                'Outros': 0
+            };
+            let total = 0;
+
+            if (data) {
+                Object.values(data).forEach(colaborador => {
+                    const agencia = colaborador.agencia || 'Outros';
+                    if (stats.hasOwnProperty(agencia)) {
+                        stats[agencia]++;
+                    } else {
+                        stats['Outros']++;
+                    }
+                    total++;
+                });
+            }
+
+            statsBody.innerHTML = `
+                ${Object.entries(stats).map(([agencia, count]) => `
+                    <tr>
+                        <td>${agencia}</td>
+                        <td>${count}</td>
+                    </tr>
+                `).join('')}
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>${total}</strong></td>
+                </tr>
+            `;
+        }
+
+        function attachPhotoListeners() {
+            document.querySelectorAll('.badge-photo').forEach(photo => {
+                photo.addEventListener('click', () => {
+                    expandedPhoto.src = photo.getAttribute('data-photo-url');
+                    expandedPhoto.alt = photo.alt;
+                    photoModal.style.display = 'flex';
+                    photoModal.querySelector('img').focus();
+                });
+            });
+        }
+
+        function generatePDF(agenciaSelecionada, data) {
             try {
                 if (!window.pdfMake) {
                     console.error('pdfMake não carregado. Verifique os scripts no <head>.');
@@ -454,30 +669,38 @@
                     return;
                 }
 
-                // Filter collaborators by selected agency and count statuses
-                const colaboradores = Object.values(data || {}).filter(c => c.agencia && c.agencia.toLowerCase() === agencia.toLowerCase());
+                let colaboradores;
+                let tituloAgencia = '';
+                let totalColaboradores;
+
+                if (agenciaSelecionada === 'all') {
+                    colaboradores = Object.values(data || {});
+                    tituloAgencia = 'Todas as Agências';
+                } else {
+                    colaboradores = Object.values(data || {}).filter(c => c.agencia && c.agencia.toLowerCase() === agenciaSelecionada.toLowerCase());
+                    tituloAgencia = `Agência: ${agenciaSelecionada}`;
+                }
+
                 if (colaboradores.length === 0) {
-                    showAlert('error', 'Nenhum colaborador bloqueado encontrado para esta agência.');
+                    showAlert('error', 'Nenhum colaborador bloqueado encontrado.');
                     return;
                 }
 
-                // Count collaborators
-                const totalColaboradores = colaboradores.length;
+                totalColaboradores = colaboradores.length;
 
-                // Define the PDF document structure
                 const docDefinition = {
                     content: [
                         { text: 'Relatório de Colaboradores Bloqueados - CDC', style: 'header' },
                         { text: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }), style: 'subheader' },
-                        { text: `Agência: ${agencia}`, style: 'summary' },
+                        { text: tituloAgencia, style: 'summary' },
                         { text: `Total de Colaboradores Bloqueados: ${totalColaboradores}`, style: 'summary' },
                         { text: '\n' },
                         {
                             table: {
                                 headerRows: 1,
-                                widths: ['*', '*', '*', '*'],
+                                widths: ['*', 'auto', '*', '*'],
                                 body: [
-                                    ['Nome', 'CPF', 'Agência', 'Motivo do Bloqueio'],
+                                    [{ text: 'Nome', style: 'tableHeader' }, { text: 'CPF', style: 'tableHeader' }, { text: 'Agência', style: 'tableHeader' }, { text: 'Motivo do Bloqueio', style: 'tableHeader' }],
                                     ...colaboradores.map(c => [
                                         c.nome || 'Não informado',
                                         c.cpf || 'Não informado',
@@ -488,21 +711,33 @@
                             },
                             layout: {
                                 fillColor: function (rowIndex) {
-                                    return (rowIndex % 2 === 0 && rowIndex > 0) ? '#f3f4f6' : null;
-                                }
+                                    return rowIndex === 0 ? '#1e40af' : (rowIndex % 2 === 0 ? '#f9fafb' : null);
+                                },
+                                hLineColor: function () { return '#e5e7eb'; },
+                                vLineColor: function () { return '#e5e7eb'; }
                             }
                         }
                     ],
                     styles: {
-                        header: { fontSize: 15, bold: true, margin: [0, 0, 0, 10] },
-                        subheader: { fontSize: 12, italics: true, margin: [0, 0, 0, 20] },
-                        summary: { fontSize: 12, bold: true, margin: [0, 5, 0, 5] }
+                        header: { fontSize: 18, bold: true, color: 'white', margin: [0, 0, 0, 15] },
+                        subheader: { fontSize: 12, italics: true, color: '#6b7280', margin: [0, 0, 0, 20] },
+                        summary: { fontSize: 12, bold: true, margin: [0, 8, 0, 8] },
+                        tableHeader: { bold: true, color: 'white', fillColor: '#1e40af' }
                     },
-                    defaultStyle: { fontSize: 10 }
+                    defaultStyle: { 
+                        fontSize: 10,
+                        font: 'Roboto'
+                    },
+                    pageMargins: [40, 60, 40, 40],
+                    pageOrientation: 'landscape'
                 };
 
-                // Create and download the PDF
-                pdfMake.createPdf(docDefinition).download(`relatorio_${agencia.replace(/\s+/g, '_')}_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`);
+                const nomeArquivo = agenciaSelecionada === 'all' 
+                    ? `relatorio_todos_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`
+                    : `relatorio_${agenciaSelecionada.replace(/\s+/g, '_')}_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`;
+
+                pdfMake.createPdf(docDefinition).download(nomeArquivo);
+                showAlert('success', 'Relatório PDF gerado com sucesso!');
             } catch (error) {
                 console.error('Erro ao gerar PDF:', error);
                 showAlert('error', 'Erro ao gerar o relatório PDF. Verifique o console para detalhes.');
@@ -513,11 +748,12 @@
         onValue(colaboradoresRef, (snapshot) => {
             const data = snapshot.val();
             displayAllColaboradores(data);
+            updateStatsTable(data);
         });
 
         pesquisaForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const cpfInput = document.getElementById('cpf').value;
+            const cpfInput = document.getElementById('cpf').value.trim();
             if (!cpfInput) {
                 showAlert('error', 'Por favor, preencha o campo CPF.');
                 return;
@@ -538,24 +774,21 @@
             photoModal.style.display = 'none';
         });
 
-        photoModal.addEventListener('click', (e) => {
-            if (e.target === photoModal) {
-                photoModal.style.display = 'none';
-            }
-        });
-
-        reportButton.addEventListener('click', () => {
-            reportModal.style.display = 'flex';
-        });
-
         reportClose.addEventListener('click', () => {
             reportModal.style.display = 'none';
         });
 
-        reportModal.addEventListener('click', (e) => {
-            if (e.target === reportModal) {
-                reportModal.style.display = 'none';
-            }
+        [photoModal, reportModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        reportButton.addEventListener('click', () => {
+            reportModal.style.display = 'flex';
+            document.getElementById('agencia').focus();
         });
 
         reportForm.addEventListener('submit', (e) => {
@@ -576,10 +809,9 @@
             alert.style.display = 'block';
             alert.className = `alert ${type}`;
             alert.textContent = message;
-            setTimeout(() => alert.style.display = 'none', 3000);
+            setTimeout(() => alert.style.display = 'none', 4000);
         }
 
-        // Verificar carregamento da biblioteca pdfMake após o carregamento da página
         window.addEventListener('load', () => {
             if (!window.pdfMake) {
                 console.error('Falha ao carregar pdfMake. Verifique os scripts no <head>.');
