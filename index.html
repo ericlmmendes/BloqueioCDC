@@ -4,109 +4,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Bloqueio CDC</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="./img/logo1.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+        :root {
+            --primary-color: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --background: #f9fafb;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
         header {
-            background-color: #004aad;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             text-align: center;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem 1rem;
+            box-shadow: var(--shadow-lg);
         }
+
         header h1 {
-            margin: 0;
-            font-size: 2rem;
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
+
         main {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 0 20px;
+            flex: 1;
+            max-width: 480px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
         }
+
         .form-container {
-            background-color: white;
-            padding: 100px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border: 1px solid #e0e0e0;
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            width: 100%;
             text-align: center;
+            transition: transform 0.2s ease-in-out;
         }
+
+        .form-container:hover {
+            transform: translateY(-2px);
+        }
+
         .form-container .logo {
             max-width: 180px;
-            margin: 0 auto 20px;
+            height: auto;
+            margin: 0 auto 1.5rem;
             display: block;
+            filter: drop-shadow(var(--shadow-sm));
         }
+
         .form-container h2 {
-            margin: 0 0 20px;
-            font-size: 1.8rem;
-            color: #004aad;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
         }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
+
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.95rem;
         }
+
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
+            padding: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            transition: border-color 0.3s;
+            font-family: inherit;
+            background: var(--surface);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
+
         input[type="text"]:focus,
         input[type="password"]:focus {
-            border-color: #004aad;
             outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
         }
+
         button[type="submit"] {
-            background-color: #004aad;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 12px 24px;
+            padding: 0.875rem 2rem;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             font-size: 1rem;
-            transition: background-color 0.3s;
+            font-weight: 500;
             display: block;
-            margin: 0 auto;
+            margin: 1.5rem auto 0;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
         }
+
         button[type="submit"]:hover {
-            background-color: #003087;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
         }
+
         .alert {
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
             font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+            display: none;
         }
+
         .alert.success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
         }
+
         .alert.error {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
         }
+
         footer {
             text-align: center;
             padding: 1rem;
-            background-color: #004aad;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            position: fixed;
-            bottom: 0;
+            font-size: 0.875rem;
+            font-weight: 400;
             width: 100%;
+        }
+
+        footer a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.75rem;
+            }
+
+            main {
+                padding: 0 0.75rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-container .logo {
+                max-width: 150px;
+            }
+
+            .form-container h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -118,22 +219,23 @@
         <div class="form-container">
             <img src="./img/logo2.png" alt="Logo Sistema CDC" class="logo">
             <h2>Acesso ao Sistema</h2>
-            <div id="alert" class="alert"></div>
-            <form id="loginForm">
+            <div id="alert" class="alert" role="alert"></div>
+            <form id="loginForm" aria-labelledby="login-label">
                 <div class="form-group">
                     <label for="login">Login</label>
-                    <input type="text" id="login" name="login" required>
+                    <input type="text" id="login" name="login" required aria-required="true" placeholder="Digite seu login">
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required aria-required="true" placeholder="Digite sua senha">
                 </div>
                 <button type="submit">Acessar</button>
             </form>
         </div>
     </main>
     <footer>
-        <p>© 2025 Sistema de Bloqueio CDC - ERICLM.EVO. Todos os direitos reservados.</p>
+        <p>© 2025 Sistema de Bloqueio CDC. Todos os direitos reservados.</p>
+        <p>Desenvolvido por <a href="mailto:ericlm.evo@gmail.com">ERICLM.EVO</a></p>
     </footer>
     <script type="text/javascript">
         var gk_isXlsx = false;
@@ -174,8 +276,8 @@
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const login = document.getElementById('login').value;
-            const password = document.getElementById('password').value;
+            const login = document.getElementById('login').value.trim();
+            const password = document.getElementById('password').value.trim();
 
             if (!login || !password) {
                 showAlert('error', 'Por favor, preencha todos os campos.');
@@ -198,7 +300,7 @@
             alert.style.display = 'block';
             alert.className = `alert ${type}`;
             alert.textContent = message;
-            setTimeout(() => alert.style.display = 'none', 3000);
+            setTimeout(() => alert.style.display = 'none', 4000);
         }
     </script>
 </body>
